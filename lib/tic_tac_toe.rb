@@ -65,4 +65,62 @@ class TicTacToe
     turn_count % 2 == 0 ? "X" : "O"
   end
 
+  def won?
+    WIN_COMBINATIONS.each do |win_combination|
+      position_1 = @board[win_combination[0]]
+      position_2 = @board[win_combination[1]]
+      position_3 = @board[win_combination[2]]
+      if position_taken?(win_combination[0])
+        if position_1 == position_2 && position_2 == position_3
+          return win_combination
+        end
+      end
+    end
+    false
+  end
+
+  def full?
+    if !@board.find{|element| element == " "}
+      true
+    else
+      false
+    end
+  end
+
+  def draw?
+    if full?
+      if !won?
+        return true
+      end
+    end
+    false
+  end
+
+  def over?
+    if won?.class == Array || draw?
+      true
+    else
+      false
+    end
+  end
+
+  def winner
+    if !won?
+      nil
+    else
+      pos = won?[0]
+      @board[pos]
+    end
+  end
+
+  def play
+    while !over?
+      turn
+    end
+    if draw?
+      puts "Cat's Game!"
+    else
+      puts "Congratulations #{winner(board)}!"
+    end
+  end
 end
